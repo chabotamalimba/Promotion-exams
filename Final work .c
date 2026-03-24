@@ -1,0 +1,215 @@
+// ========================================
+//       STUDENTS MANAGEMENT SYSTEM
+// ========================================
+// Author: Chabota Malimba
+// Student Number: 202510122682
+// Intake: June 2025
+
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+
+#define MAX 100
+
+// Structure to store student details like name, ID NO and the courses
+struct Student {
+    char name[50];
+    int studentNo;
+    int math, english, computer;
+};
+
+struct Student students[MAX];
+int count = 0;
+
+// Function to add student at first 
+void addStudent() {
+    printf("\nEnter Name: ");
+    scanf(" %[^\n]", students[count].name);
+
+    printf("Enter Student Number: ");
+    scanf("%d", &students[count].studentNo);
+
+    printf("Enter Math Marks: ");
+    scanf("%d", &students[count].math);
+
+    printf("Enter English Marks: ");
+    scanf("%d", &students[count].english);
+
+    printf("Enter Computer Marks: ");
+    scanf("%d", &students[count].computer);
+
+    count++;
+    printf("\nStudent added successfully!\n");
+}
+
+// This is the Function to view students in C programming language 
+void viewStudents() {
+    if (count == 0) {
+        printf("\nNo records found!\n");
+        return;
+    }
+
+    for (int i = 0; i < count; i++) {
+        printf("\n========================================\n");
+        printf("Name        : %s\n", students[i].name);
+        printf("Student No  : %d\n", students[i].studentNo);
+
+        printf("\n           MARKS\n");
+        printf("----------------------------------------\n");
+        printf("Math        : %d\n", students[i].math);
+        printf("English     : %d\n", students[i].english);
+        printf("Computer    : %d\n", students[i].computer);
+        printf("========================================\n");
+    }
+}
+
+// This is the Function to search student by the use of the student ID number 
+void searchStudent() {
+    int number, found = 0;
+
+    printf("\nEnter Student Number to search: ");
+    scanf("%d", &number);
+
+    for (int i = 0; i < count; i++) {
+        if (students[i].studentNo == number) {
+            printf("\n========================================\n");
+            printf("Name        : %s\n", students[i].name);
+            printf("Student No  : %d\n", students[i].studentNo);
+
+            printf("\n           MARKS\n");
+            printf("----------------------------------------\n");
+            printf("Math        : %d\n", students[i].math);
+            printf("English     : %d\n", students[i].english);
+            printf("Computer    : %d\n", students[i].computer);
+            printf("========================================\n");
+
+            found = 1;
+            break;
+        }
+    }
+
+    if (!found) {
+        printf("\nStudent not found!\n");
+    }
+}
+
+// This is the in all the courses or subjects if is a secondary school Function to calculate results
+void calculateResults() {
+    int number, found = 0;
+
+    printf("\nEnter Student Number: ");
+    scanf("%d", &number);
+
+    for (int i = 0; i < count; i++) {
+        if (students[i].studentNo == number) {
+            int total = students[i].math + students[i].english + students[i].computer;
+            float average = total / 3.0;
+            char grade;
+
+            // The bellow is my Grade calculation
+            if (average >= 80)
+                grade = 'A';
+            else if (average >= 70)
+                grade = 'B';
+            else if (average >= 60)
+                grade = 'C';
+            else if (average >= 50)
+                grade = 'D';
+            else
+                grade = 'F';
+
+            printf("\n========================================\n");
+            printf("           RESULTS SUMMARY\n");
+            printf("========================================\n");
+            printf("Name        : %s\n", students[i].name);
+            printf("Student No  : %d\n", students[i].studentNo);
+
+            printf("\n           MARKS\n");
+            printf("----------------------------------------\n");
+            printf("Math        : %d\n", students[i].math);
+            printf("English     : %d\n", students[i].english);
+            printf("Computer    : %d\n", students[i].computer);
+
+            printf("\n----------------------------------------\n");
+            printf("Total       : %d\n", total);
+            printf("Average     : %.2f\n", average);
+            printf("Grade       : %c\n", grade);
+            printf("========================================\n");
+
+            found = 1;
+            break;
+        }
+    }
+
+    if (!found) {
+        printf("\nStudent not found!\n");
+    }
+}
+
+// The following is the Function used to save data to file
+void saveData() {
+    FILE *file = fopen("students.txt", "w");
+
+    if (file == NULL) {
+        printf("\nError saving data!\n");
+        return;
+    }
+
+    for (int i = 0; i < count; i++) {
+        fprintf(file, "%s %d %d %d %d\n",
+                students[i].name,
+                students[i].studentNo,
+                students[i].math,
+                students[i].english,
+                students[i].computer);
+    }
+
+    fclose(file);
+    printf("\nData saved successfully!\n");
+}
+
+//This is the is the Main function of my project as I'm near the title 
+int main() {
+    int choice;
+
+    do {
+        printf("\n========================================\n");
+        printf("WELCOME TO THE STUDENT MANAGEMENT SYSTEM\n");
+        printf("========================================\n");
+        printf("1. Add Student\n");
+        printf("2. View Students\n");
+        printf("3. Search Student\n");
+        printf("4. Calculate Results\n");
+        printf("5. Save Data\n");
+        printf("6. Exit\n");
+        printf("========================================\n");
+        printf("Enter choice: ");
+        scanf("%d", &choice);
+
+        switch (choice) {
+            case 1:
+                addStudent();
+                break;
+            case 2:
+                viewStudents();
+                break;
+            case 3:
+                searchStudent();
+                break;
+            case 4:
+                calculateResults();
+                break;
+            case 5:
+                saveData();
+                break;
+            case 6:
+                printf("\nExiting program...\n");
+                break;
+            default:
+                printf("\nInvalid choice!\n");
+        }
+
+    } while (choice != 6);
+
+    return 0;
+}
